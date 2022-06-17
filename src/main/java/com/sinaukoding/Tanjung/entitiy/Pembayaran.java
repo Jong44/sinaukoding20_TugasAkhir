@@ -25,7 +25,7 @@ public class Pembayaran {
     private Date tglBayar;
 
     @Column(name = "total")
-    private Double Total;
+    private String Total;
 
     @OneToMany(mappedBy = "pembayaran")
     List<Transaksi> transaksiList = new ArrayList<>();

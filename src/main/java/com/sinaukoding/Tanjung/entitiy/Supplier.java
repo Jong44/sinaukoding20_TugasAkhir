@@ -15,7 +15,7 @@ public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_supplier")
-    private int id_supplier;
+    private Integer idSupplier;
 
     @Column(name = "nama_supplier")
     private String namaSupplier;
@@ -26,6 +26,5 @@ public class Supplier {
     @Column(name = "alamat")
     private String alamat;
 
-    @OneToMany(mappedBy = "supplier")
-    List<Barang> barangList = new ArrayList<>();
+
 }

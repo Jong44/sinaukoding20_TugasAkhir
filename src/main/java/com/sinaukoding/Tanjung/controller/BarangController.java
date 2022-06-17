@@ -1,8 +1,12 @@
 package com.sinaukoding.Tanjung.controller;
 ;
+import com.sinaukoding.Tanjung.Response;
 import com.sinaukoding.Tanjung.entitiy.Barang;
+import com.sinaukoding.Tanjung.entitiy.dto.BarangCostumeDTO;
+import com.sinaukoding.Tanjung.entitiy.dto.BarangDTO;
 import com.sinaukoding.Tanjung.service.BarangService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,34 +19,44 @@ public class BarangController {
     BarangService service;
 
     @PostMapping
-    public Barang saveBarang(@RequestBody Barang param){
-        return service.save(param);
+    public Response saveBarang(@RequestBody BarangDTO param){
+        return new Response(service.save(param),"Data berhasil disimpan", HttpStatus.OK);
     }
 
     @GetMapping
-    public List<Barang> findAll(){
-        return service.lihatSemuaData();
+    public Response findAll(){
+        return new Response(service.lihatSemuaData(),"Data berhasil ditampilkan", HttpStatus.OK);
     }
 
     @GetMapping(value = "/find-by-nama-barang")
-        public List<Barang> findByNamaBarang(@RequestParam(value = "namaBarang") String namaBarang){
-            return service.findByNamaBarang(namaBarang);
+    public Response findByNamaBarang(@RequestParam(value = "namaBarang") String namaBarang){
+        List<BarangDTO> data = service.findByNamaBarang(namaBarang);
+        return new Response(data, data.isEmpty() ? "Barang tidak ditemukan" : "Barang ditemukan", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/{id_barang}")
+        public Response findById(@PathVariable int id_barang){
+        BarangDTO data = service.findById(id_barang);
+        return new Response(data, data !=null ? "Data ditemukan": "Data tidak ditemukan", HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id_barang}")
-    public Barang updateBarang(@RequestBody Barang param, @PathVariable int id_barang){
-        return service.updateBarang(param, id_barang);
+    public Response updateBarang(@RequestBody BarangDTO param,@PathVariable int id_barang){
+        BarangDTO data = service.updateBarang(param, id_barang);
+        return new Response(data, data != null ? "Data berhasil diubah" : "Data gagal diubah", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id_barang}")
-    public String deleteBarang(@PathVariable int id_barang){
+    public Response DeleteBarang(@PathVariable int id_barang){
         if (service.deleteBarang(id_barang)){
-            return "Data Berhasil dihapus";
+            return new Response("Data berhasil dihapus", HttpStatus.OK);
         }
         else {
-            return "Data Gagal dihapus";
+            return new Response("Data gagal dihapus", HttpStatus.OK);
         }
+
     }
+
 
 
 

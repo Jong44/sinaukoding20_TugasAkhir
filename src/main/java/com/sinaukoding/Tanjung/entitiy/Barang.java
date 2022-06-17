@@ -22,12 +22,12 @@ public class Barang {
     private String namaBarang;
 
     @Column(name = "harga")
-    private double harga;
+    private String harga;
 
     @Column(name = "stok")
-    private int stok;
+    private String stok;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_supplier")
     private Supplier supplier;
 
